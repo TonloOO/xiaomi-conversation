@@ -61,8 +61,14 @@ class XiaomiMiMoSTTEntity(stt.SpeechToTextEntity):
     def supported_sample_rates(self) -> list[stt.AudioSampleRates]:
         """Return supported sample rates."""
         return [
+            stt.AudioSampleRates.SAMPLERATE_8000,
+            stt.AudioSampleRates.SAMPLERATE_11000,
             stt.AudioSampleRates.SAMPLERATE_16000,
-            stt.AudioSampleRates.SAMPLERATE_24000,
+            stt.AudioSampleRates.SAMPLERATE_18900,
+            stt.AudioSampleRates.SAMPLERATE_22000,
+            stt.AudioSampleRates.SAMPLERATE_32000,
+            stt.AudioSampleRates.SAMPLERATE_37800,
+            stt.AudioSampleRates.SAMPLERATE_44100,
             stt.AudioSampleRates.SAMPLERATE_48000,
         ]
 
