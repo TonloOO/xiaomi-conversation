@@ -122,8 +122,6 @@ async def _delta_stream(
         delta = first_delta(chunk)
         if content := delta.get("content"):
             yield {"content": content}
-        if thinking := delta.get("reasoning_content"):
-            yield {"thinking_content": thinking}
         for call in delta.get("tool_calls") or []:
             item = tool_calls.setdefault(
                 call.get("index", len(tool_calls)),
