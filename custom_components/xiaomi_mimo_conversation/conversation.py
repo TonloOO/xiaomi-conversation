@@ -112,6 +112,11 @@ def _payload(data: dict[str, Any], chat_log: conversation.ChatLog) -> dict[str, 
     return payload
 
 
+def _llm_hass_api(data: dict[str, Any]) -> str | list[str]:
+    """Return the HA LLM API to expose to MiMo."""
+    return data.get(CONF_LLM_HASS_API) or llm.LLM_API_ASSIST
+
+
 async def _delta_stream(
     entry: MiMoConfigEntry, payload: dict[str, Any]
 ) -> AsyncIterator[conversation.AssistantContentDeltaDict]:
@@ -167,8 +172,7 @@ class XiaomiMiMoConversationEntity(
         self._entry = entry
         self._attr_unique_id = f"{entry.entry_id}_conversation"
         self._attr_name = entry.title
-        if _data(entry).get(CONF_LLM_HASS_API):
-            self._attr_supported_features = conversation.ConversationEntityFeature.CONTROL
+        self._attr_supported_features = conversation.ConversationEntityFeature.CONTROL
 
     @property
     def supported_languages(self) -> list[str] | Literal["*"]:
@@ -195,7 +199,7 @@ class XiaomiMiMoConversationEntity(
         try:
             await chat_log.async_provide_llm_data(
                 user_input.as_llm_context(DOMAIN),
-                data.get(CONF_LLM_HASS_API),
+                _llm_hass_api(data),
                 data.get(CONF_PROMPT),
                 user_input.extra_system_prompt,
             )
