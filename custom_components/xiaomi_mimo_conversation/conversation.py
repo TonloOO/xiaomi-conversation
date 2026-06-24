@@ -14,7 +14,6 @@ from homeassistant.const import CONF_LLM_HASS_API, CONF_PROMPT, MATCH_ALL
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import intent, llm
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
-from homeassistant.util.json import json_dumps
 
 from . import MiMoConfigEntry
 from .client import MiMoError
@@ -70,7 +69,7 @@ def _message(content: conversation.Content) -> dict[str, Any] | None:
             "role": "tool",
             "tool_call_id": content.tool_call_id,
             "name": content.tool_name,
-            "content": json_dumps(content.tool_result),
+            "content": json.dumps(content.tool_result),
         }
     if isinstance(content, conversation.AssistantContent):
         message: dict[str, Any] = {
@@ -84,7 +83,7 @@ def _message(content: conversation.Content) -> dict[str, Any] | None:
                     "type": "function",
                     "function": {
                         "name": call.tool_name,
-                        "arguments": json_dumps(call.tool_args),
+                        "arguments": json.dumps(call.tool_args),
                     },
                 }
                 for call in content.tool_calls
