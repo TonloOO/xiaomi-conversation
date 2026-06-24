@@ -16,9 +16,11 @@ from homeassistant.components.tts import (
     Voice,
 )
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from . import MiMoConfigEntry
+from .client import first_delta
 from .const import BUILT_IN_VOICES, CONF_TTS_MODEL, CONF_TTS_STYLE, CONF_TTS_VOICE
 from .conversation import _data
 
@@ -90,7 +92,9 @@ class XiaomiMiMoTTSEntity(TextToSpeechEntity):
         }
         pcm = bytearray()
         async for chunk in self._entry.runtime_data.stream(payload):
-            audio = chunk.get("choices", [{}])[0].get("delta", {}).get("audio")
+            audio = first_delta(chunk).get("audio")
             if audio and audio.get("data"):
                 pcm.extend(base64.b64decode(audio["data"]))
+        if not pcm:
+            raise HomeAssistantError("MiMo response did not include audio data")
         return "wav", _wav(bytes(pcm))

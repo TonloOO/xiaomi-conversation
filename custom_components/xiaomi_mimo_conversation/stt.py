@@ -12,6 +12,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from . import MiMoConfigEntry
+from .client import first_delta
 from .const import CONF_ASR_MODEL
 from .conversation import _data
 
@@ -106,7 +107,7 @@ class XiaomiMiMoSTTEntity(stt.SpeechToTextEntity):
         }
         text = ""
         async for chunk in self._entry.runtime_data.stream(payload):
-            text += chunk.get("choices", [{}])[0].get("delta", {}).get("content", "")
+            text += first_delta(chunk).get("content", "")
         if text:
             return stt.SpeechResult(text, stt.SpeechResultState.SUCCESS)
         return stt.SpeechResult(None, stt.SpeechResultState.ERROR)

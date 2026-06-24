@@ -41,6 +41,13 @@ def test_stream_json_parses_openai_compatible_sse_lines():
     }
 
 
+def test_first_delta_skips_empty_stream_chunks():
+    assert client.first_delta({"choices": []}) == {}
+    assert client.first_delta({"choices": [{"delta": {"content": "hi"}}]}) == {
+        "content": "hi"
+    }
+
+
 def test_message_helpers_extract_text_and_audio():
     assert client.message_text({"choices": [{"message": {"content": "ok"}}]}) == "ok"
     raw = b"pcm"

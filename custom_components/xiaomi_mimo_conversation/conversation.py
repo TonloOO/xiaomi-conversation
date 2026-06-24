@@ -16,7 +16,7 @@ from homeassistant.helpers import intent, llm
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from . import MiMoConfigEntry
-from .client import MiMoError
+from .client import MiMoError, first_delta
 from .const import (
     CONF_LLM_MODEL,
     CONF_MAX_TOKENS,
@@ -119,7 +119,7 @@ async def _delta_stream(
     tool_calls: dict[int, dict[str, str]] = {}
     yield {"role": "assistant"}
     async for chunk in entry.runtime_data.stream(payload):
-        delta = chunk.get("choices", [{}])[0].get("delta", {})
+        delta = first_delta(chunk)
         if content := delta.get("content"):
             yield {"content": content}
         if thinking := delta.get("reasoning_content"):

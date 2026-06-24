@@ -57,6 +57,14 @@ def stream_json(line: str) -> dict[str, Any] | None:
     return json.loads(data)
 
 
+def first_delta(chunk: dict[str, Any]) -> dict[str, Any]:
+    """Return the first streaming delta, if this chunk has one."""
+    choices = chunk.get("choices") or []
+    if not choices:
+        return {}
+    return choices[0].get("delta") or {}
+
+
 class MiMoClient:
     """Minimal async client for Xiaomi MiMo chat-completions APIs."""
 
