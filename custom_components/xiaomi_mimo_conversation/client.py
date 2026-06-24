@@ -65,6 +65,11 @@ def first_delta(chunk: dict[str, Any]) -> dict[str, Any]:
     return choices[0].get("delta") or {}
 
 
+def delta_content(chunk: dict[str, Any]) -> str:
+    """Return text content from a streaming chunk."""
+    return first_delta(chunk).get("content") or ""
+
+
 class MiMoClient:
     """Minimal async client for Xiaomi MiMo chat-completions APIs."""
 

@@ -48,6 +48,11 @@ def test_first_delta_skips_empty_stream_chunks():
     }
 
 
+def test_delta_content_treats_null_as_empty_text():
+    assert client.delta_content({"choices": [{"delta": {"content": None}}]}) == ""
+    assert client.delta_content({"choices": [{"delta": {"content": "hi"}}]}) == "hi"
+
+
 def test_message_helpers_extract_text_and_audio():
     assert client.message_text({"choices": [{"message": {"content": "ok"}}]}) == "ok"
     raw = b"pcm"
