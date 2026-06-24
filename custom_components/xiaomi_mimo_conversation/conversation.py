@@ -117,9 +117,12 @@ async def _delta_stream(
 ) -> AsyncIterator[conversation.AssistantContentDeltaDict]:
     """Convert MiMo stream chunks into HA chat-log deltas."""
     tool_calls: dict[int, dict[str, str]] = {}
+    reasoning_parts: list[str] = []
     yield {"role": "assistant"}
     async for chunk in entry.runtime_data.stream(payload):
         delta = first_delta(chunk)
+        if reasoning := delta.get("reasoning_content"):
+            reasoning_parts.append(reasoning)
         if content := delta.get("content"):
             yield {"content": content}
         for call in delta.get("tool_calls") or []:
@@ -147,6 +150,8 @@ async def _delta_stream(
                 if call["id"] and call["name"]
             ]
         }
+    if reasoning_parts:
+        yield {"native": {"reasoning_content": "".join(reasoning_parts)}}
 
 
 class XiaomiMiMoConversationEntity(

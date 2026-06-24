@@ -55,7 +55,12 @@ class XiaomiMiMoSTTEntity(stt.SpeechToTextEntity):
     @property
     def supported_bit_rates(self) -> list[stt.AudioBitRates]:
         """Return supported bit rates."""
-        return [stt.AudioBitRates.BITRATE_16]
+        return [
+            stt.AudioBitRates.BITRATE_8,
+            stt.AudioBitRates.BITRATE_16,
+            stt.AudioBitRates.BITRATE_24,
+            stt.AudioBitRates.BITRATE_32,
+        ]
 
     @property
     def supported_sample_rates(self) -> list[stt.AudioSampleRates]:
@@ -75,7 +80,7 @@ class XiaomiMiMoSTTEntity(stt.SpeechToTextEntity):
     @property
     def supported_channels(self) -> list[stt.AudioChannels]:
         """Return supported channels."""
-        return [stt.AudioChannels.CHANNEL_MONO]
+        return [stt.AudioChannels.CHANNEL_MONO, stt.AudioChannels.CHANNEL_STEREO]
 
     async def async_process_audio_stream(
         self, metadata: stt.SpeechMetadata, stream: AsyncIterable[bytes]
