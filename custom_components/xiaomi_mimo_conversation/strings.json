@@ -1,0 +1,27 @@
+{
+  "config": {
+    "error": {
+      "cannot_connect": "Cannot connect",
+      "invalid_auth": "Invalid API key",
+      "unknown": "Unexpected error"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "endpoint": "Endpoint",
+          "api_key": "API key",
+          "llm_model": "LLM model",
+          "asr_model": "ASR model",
+          "tts_model": "TTS model",
+          "tts_voice": "Voice",
+          "tts_style": "TTS style",
+          "prompt": "Prompt",
+          "llm_hass_api": "Control Home Assistant",
+          "max_tokens": "Max tokens",
+          "temperature": "Temperature",
+          "top_p": "Top P"
+        }
+      }
+    }
+  }
+}

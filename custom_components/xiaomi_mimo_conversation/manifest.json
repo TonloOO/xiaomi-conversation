@@ -1,0 +1,12 @@
+{
+  "domain": "xiaomi_mimo_conversation",
+  "name": "Xiaomi MiMo Conversation",
+  "after_dependencies": ["assist_pipeline", "intent"],
+  "codeowners": [],
+  "config_flow": true,
+  "dependencies": ["conversation"],
+  "documentation": "https://mimo.mi.com/docs/en-US/quick-start/summary/first-api-call",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "version": "0.1.0"
+}
